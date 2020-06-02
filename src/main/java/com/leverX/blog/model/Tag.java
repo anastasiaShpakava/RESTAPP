@@ -1,5 +1,6 @@
 package com.leverX.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Tag {
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "article_tag", schema = "blog",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
