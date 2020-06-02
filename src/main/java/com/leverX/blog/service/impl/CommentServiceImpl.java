@@ -29,6 +29,8 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
+
     public Comment saveNewComment(Comment newComment) throws DataBaseException {
         Article article = articleRepository.findById(newComment.getArticle().getId()).orElseThrow(DataBaseException::new);
         User user = userRepository.findById(newComment.getUser().getId()).orElseThrow(DataBaseException::new);

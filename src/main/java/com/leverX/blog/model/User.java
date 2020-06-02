@@ -39,8 +39,9 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column (name="role")
-    @Enumerated(EnumType.STRING)
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
     private UserRole userRole;
 
     @JsonIgnore
@@ -52,6 +53,6 @@ public class User {
     private List <Comment> comments;
 
     public boolean isAdmin() {
-        return this.userRole == UserRole.ADMINISTRATOR;
+        return true;
     }
 }

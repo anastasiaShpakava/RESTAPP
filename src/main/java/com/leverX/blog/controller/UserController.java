@@ -2,20 +2,18 @@ package com.leverX.blog.controller;
 
 import com.leverX.blog.model.dto.UserDto;
 import com.leverX.blog.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-@AllArgsConstructor
-@Log
+@RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("/save")
     public UserDto saveUsers(@RequestBody UserDto userDto) throws ValidationException {
