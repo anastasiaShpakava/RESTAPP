@@ -17,6 +17,4 @@ public interface ArticleRepository extends JpaRepository <Article, Integer> {
     Page<Article> findArticlesByTags(@Param("tags") Collection<String> tags, Pageable pageable);
 
     Page<Article> findAllByStatus(ArticleStatus articleStatus, Pageable pageable);
-
 }
-//методы доступа к бд
