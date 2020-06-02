@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,9 +29,11 @@ public class User {
     private String lastName;
 
     @Column
+    @Size(min = 4, message = "Password should be not less than 4 symbols")
     private String password;
 
     @Column()
+    @Email
     private String email;
 
     @Column(name = "created_at")

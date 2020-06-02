@@ -1,0 +1,19 @@
+package com.leverX.blog.service;
+
+import com.leverX.blog.exception.DataBaseException;
+import com.leverX.blog.model.Article;
+import com.leverX.blog.model.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface CommentService {
+   Comment saveNewComment(Comment newComment) throws DataBaseException;
+
+
+   void deleteCommentFromArticle(Comment comment, Article article);
+
+    Page<Comment> getCommentsOfArticle(Integer id, int pageNumber, int pageSize, Sort sort) throws DataBaseException;
+}

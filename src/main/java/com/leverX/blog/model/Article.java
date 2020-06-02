@@ -33,8 +33,8 @@ public class Article {
     @Column(name = "status")
     private ArticleStatus articleStatus;
 
-    @ManyToOne(fetch = FetchType.EAGER) //извлекается полностью в момент извл. родителя
-    @JoinColumn(name = "author_id")  //
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private User user;
 
     @Column

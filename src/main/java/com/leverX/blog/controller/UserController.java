@@ -1,7 +1,6 @@
 package com.leverX.blog.controller;
 
 import com.leverX.blog.model.dto.UserDto;
-import com.leverX.blog.exception.ValidationException;
 import com.leverX.blog.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
