@@ -4,19 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +30,12 @@ public class User {
     private String lastName;
 
     @Column
-    @Size(min = 4, message = "Password should be not less than 4 symbols")
+    private String login;
+
+    @Column
     private String password;
 
-    @Column()
+    @Column
     @Email
     private String email;
 
@@ -40,19 +43,22 @@ public class User {
     private LocalDateTime createdAt;
 
     @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id")
-    private UserRole userRole;
+    private Role role;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List <Article> articles;
+    private List<Article> articles;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List <Comment> comments;
-
-    public boolean isAdmin() {
-        return true;
-    }
+    private List<Comment> comments;
 }

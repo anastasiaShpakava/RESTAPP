@@ -8,23 +8,19 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
 
-    private Integer id;
-    private String firstName;
-    private String lastName;
+    private String login;
     private String password;
-    private String email;
+
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
         CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.id=user.getId();
-        customUserDetails.firstName=user.getFirstName();
-        customUserDetails.lastName=user.getLastName();
+
+        customUserDetails.login=user.getLogin();
         customUserDetails.password=user.getPassword();
-        customUserDetails.email=user.getEmail();
-        customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().getName()));
+        customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
         return customUserDetails;
     }
 
@@ -40,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return lastName;
+        return login;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.leverX.blog.model.dto;
 
-import com.leverX.blog.model.UserRole;
+import com.leverX.blog.model.Role;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -17,5 +17,5 @@ public class UserDto {
     private String password;
     private String email;
     private LocalDateTime createdAt;
-    private UserRole userRole;
+    private Role role;
 }

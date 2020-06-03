@@ -1,9 +1,9 @@
 package com.leverX.blog.repository;
 
-import com.leverX.blog.model.UserRole;
+import com.leverX.blog.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
+public interface UserRoleRepository extends JpaRepository<Role, Integer> {
 
-    UserRole findByEmail(String email);
+    Role findByEmail(String email);
 }

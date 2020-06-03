@@ -1,7 +1,7 @@
 package com.leverX.blog.service.impl;
 
 import com.leverX.blog.model.User;
-import com.leverX.blog.model.UserRole;
+import com.leverX.blog.model.Role;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.repository.UserRoleRepository;
 import com.leverX.blog.service.UserService;
@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(User user) {
-        UserRole userRole = userRoleRepository.findByEmail("ROLE_USER");
-        user.setUserRole(userRole);
+        Role role = userRoleRepository.findByEmail("ROLE_USER");
+        user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

@@ -29,5 +29,5 @@ public class Tag {
     @JoinTable(name = "article_tag", schema = "blog",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
-    private Set<Article> articles = new HashSet<>();
+    private Collection<Article> articles;
 }
