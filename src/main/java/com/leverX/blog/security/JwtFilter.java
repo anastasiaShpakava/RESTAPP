@@ -16,6 +16,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static org.springframework.util.StringUtils.hasText;
+
 @Component
 @Slf4j
 public class JwtFilter extends GenericFilterBean {

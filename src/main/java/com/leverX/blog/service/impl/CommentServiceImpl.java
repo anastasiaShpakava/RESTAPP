@@ -43,7 +43,6 @@ public class CommentServiceImpl implements CommentService {
                 .build());
     }
 
-
     @Override
     @Transactional
     public void deleteCommentFromArticle(Comment comment, Article article) {
@@ -56,7 +55,7 @@ public class CommentServiceImpl implements CommentService {
             throw new DataBaseException("Article with such id " + id + " doesn't exist");
         }
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort); //разбивка на стр и сортировка
-        return commentRepository.findAllByArticleId(id, pageRequest);
+        return commentRepository.findCommentsByArticleId(id, pageRequest);
     }
 }
 

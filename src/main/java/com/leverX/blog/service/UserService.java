@@ -14,7 +14,5 @@ public interface UserService {
 
     User createUser(RegistrationRequest registrationRequest);
 
-    String generatePasswordResetToken(String email);
-
-    UserDetails loadUserById(Integer id);
+    User findByLoginAndPassword(String login, String password);
 }

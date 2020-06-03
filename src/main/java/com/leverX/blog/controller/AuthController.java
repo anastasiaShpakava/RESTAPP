@@ -1,6 +1,9 @@
 package com.leverX.blog.controller;
 
 import com.leverX.blog.model.User;
+import com.leverX.blog.model.dto.AuthRequest;
+import com.leverX.blog.model.dto.AuthResponse;
+import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.security.JwtProvider;
 import com.leverX.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,8 @@ public class AuthController {
 
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
-        UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        String token = jwtProvider.generateToken(userEntity.getLogin());
+        User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
+        String token = jwtProvider.generateToken(user.getLogin());
         return new AuthResponse(token);
     }
 }

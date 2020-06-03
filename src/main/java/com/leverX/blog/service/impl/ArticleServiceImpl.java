@@ -12,7 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +33,14 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final TagService tagService;
-    private final UserService userService;
 
     @Override
     public Page<Article> getArticlesPage(int pageNumber, int pageSize, Sort sort) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        return articleRepository.findAll(pageRequest); //добавить после секьюрити в завис-ти от того,аноним или зарегистр., какие публикации может видеть
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return articleRepository.findArticlesByStatus(ArticleStatus.PUBLIC, pageRequest);
+        } else return articleRepository.findAll(pageRequest);
     }
 
 
@@ -42,8 +48,13 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<Article> findArticleByTag(List<String> tags, int pageNumber, int pageSize, Sort sort) {
         tags = tags.stream().map(String::toLowerCase).collect(Collectors.toList());
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return articleRepository.findPublicArticlesByTags(tags, pageRequest);
+        }
         return articleRepository.findArticlesByTags(tags, pageRequest);
     }
+
 
     @Override
     @Transactional
@@ -63,6 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.delete(article.getId());
     }
 
+    @Transactional
     @Override
     public Article createArticle(Article article, ArticleDto articleDto) {
         article.setText(articleDto.getText());
@@ -75,8 +87,8 @@ public class ArticleServiceImpl implements ArticleService {
             for (Tag tag : editedTags) {
                 articleTags.add(tagService.saveTag(tag));
             }
-            article.setTags((Set<Tag>) articleTags);
+            article.setTags(articleTags);
         }
-        return articleRepository.saveAndFlush(article);
+        return articleRepository.save(article);
     }
 }

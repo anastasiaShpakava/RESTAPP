@@ -6,32 +6,26 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegistrationRequest {
-    @Size.List({
-            @Size(min = 4, message = "Login is too short"),
-            @Size(max = 15, message = "Login is too long")
-    })
-    @NotBlank
+
+    @NotEmpty
     private String login;
 
-    @NotBlank
+    @NotEmpty
+    private String password;
+
+    @NotEmpty
+    @Email
+    private String email;
+
+    @NotEmpty
     private String firstName;
 
-    @NotBlank
+    @NotEmpty
     private String lastName;
 
-    @Email
-    @NotBlank
-    private String email;
-    @Size.List({
-            @Size(min = 3, message = "Password is too short"),
-            @Size(max = 45, message = "Password is too long")
-    })
-    @NotBlank
-    private String password;
 }
