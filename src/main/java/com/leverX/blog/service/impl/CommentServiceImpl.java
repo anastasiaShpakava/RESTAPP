@@ -10,6 +10,7 @@ import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.service.CommentService;
 import com.leverX.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;

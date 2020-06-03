@@ -12,4 +12,6 @@ public interface UserService {
     User save(User user);
 
     boolean emailExists(String email);
+
+    User findByEmailAndPassword(String email, String password);
 }

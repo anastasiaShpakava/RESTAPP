@@ -9,6 +9,7 @@ import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.TagService;
 import com.leverX.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final TagService tagService;
