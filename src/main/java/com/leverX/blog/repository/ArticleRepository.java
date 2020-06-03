@@ -9,16 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
-import java.util.List;
 
-public interface ArticleRepository extends JpaRepository <Article, Integer> {
 
-    Page<Article> findAllByLogin(String userLogin, Pageable pageable);
+public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-    @Query("SELECT a FROM Article a JOIN a.tags t WHERE LOWER  (t.name) IN :tags")  //в нижн. регистр
+    Page<Article> findArticlesByLogin(String userLogin, Pageable pageable);
+
+    @Query("SELECT a FROM Article a JOIN a.tags t WHERE LOWER  (t.name) IN :tags") //в нижн. регистр
     Page<Article> findArticlesByTags(@Param("tags") Collection<String> tags, Pageable pageable);
 
-    Page<Article> findAllByStatus(ArticleStatus articleStatus, Pageable pageable);
-
-    void delete(Integer id); //?
+    Page<Article> findArticlesByStatus(ArticleStatus articleStatus, Pageable pageable);
 }
