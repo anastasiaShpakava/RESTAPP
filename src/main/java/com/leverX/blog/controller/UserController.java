@@ -1,6 +1,5 @@
 package com.leverX.blog.controller;
 
-import com.leverX.blog.model.dto.UserDto;
 import com.leverX.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Set;
 
 @Data
@@ -18,5 +19,5 @@ public class ArticleDto {
     private Integer author_id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Set<Tag> tags;
+    private Collection<Tag> tags;
 }
