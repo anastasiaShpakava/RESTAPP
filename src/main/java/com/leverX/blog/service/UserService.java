@@ -1,17 +1,20 @@
 package com.leverX.blog.service;
 
 import com.leverX.blog.model.User;
-
-
-import java.util.List;
+import com.leverX.blog.model.dto.RegistrationRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
     User findByEmail(String email);
 
+    User findByLogin(String login);
+
     User save(User user);
 
-    boolean emailExists(String email);
+    User createUser(RegistrationRequest registrationRequest);
 
-    User findByEmailAndPassword(String email, String password);
+    String generatePasswordResetToken(String email);
+
+    UserDetails loadUserById(Integer id);
 }

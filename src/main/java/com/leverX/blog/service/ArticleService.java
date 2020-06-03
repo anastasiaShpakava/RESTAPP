@@ -13,7 +13,7 @@ public interface ArticleService {
 
     Page<Article> findArticleByTag(List<String> tags, int pageNumber, int pageSize, Sort sort);
 
-    Article saveNewArticle(Article newArticle);
+    Article saveNewArticle(Article article);
 
     void deleteArticle(Article article);
 

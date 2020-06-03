@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
-   Comment saveNewComment(Comment newComment) throws DataBaseException;
+    Comment saveNewComment(Comment comment) throws DataBaseException;
 
-
-   void deleteCommentFromArticle(Comment comment, Article article);
+    void deleteCommentFromArticle(Comment comment, Article article);
 
     Page<Comment> getCommentsOfArticle(Integer id, int pageNumber, int pageSize, Sort sort) throws DataBaseException;
 }
