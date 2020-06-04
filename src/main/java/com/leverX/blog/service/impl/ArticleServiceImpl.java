@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor = @__(@Autowired)) //
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final TagService tagService;
