@@ -70,24 +70,6 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.delete(article.getId());
     }
 
-    @Transactional
-    @Override
-    public Article createArticle(Article article) {
-        article.setText(article.getText());
-        article.setTitle(article.getTitle());
-        article.setUpdatedAt(LocalDateTime.now());
-        article.setArticleStatus(articleDto.getArticleStatus());
-        if (articleDto.getTags() != null) {
-            Collection<Tag> editedTags = articleDto.getTags();
-            Collection<Tag> articleTags = new ArrayList<>();
-            for (Tag tag : editedTags) {
-                articleTags.add(tagService.saveTag(tag));
-            }
-            article.setTags(articleTags);
-        }
-        return articleRepository.save(article);
-    }
-
     @Override
     public void changeStatus(Integer id, ArticleStatus articleStatus) {
         articleRepository.getArticleById(id).setArticleStatus(articleStatus);

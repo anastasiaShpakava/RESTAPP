@@ -18,8 +18,6 @@ public interface ArticleService {
 
     void deleteArticle(Article article);
 
-    Article createArticle(Article article);
-
     void changeStatus(Integer id, ArticleStatus articleStatus);
 
     public List<Article> getPublicArticle();
