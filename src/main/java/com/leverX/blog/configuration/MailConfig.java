@@ -1,8 +1,10 @@
 package com.leverX.blog.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -39,5 +41,16 @@ public class MailConfig {
         properties.setProperty("mail.smtp.starttls.enable", "true");
 
         return mailSender;
+    }
+
+    @Bean
+
+    public MessageSource messageSource() {
+
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("/resources/message");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+
     }
 }
