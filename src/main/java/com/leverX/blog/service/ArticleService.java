@@ -1,14 +1,10 @@
 package com.leverX.blog.service;
 
 import com.leverX.blog.model.Article;
-import com.leverX.blog.model.dto.ArticleDto;
+import com.leverX.blog.model.ArticleStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ArticleService {
@@ -22,5 +18,9 @@ public interface ArticleService {
 
     void deleteArticle(Article article);
 
-    Article createArticle(Article article, ArticleDto articleDto);
+    Article createArticle(Article article);
+
+    void changeStatus(Integer id, ArticleStatus articleStatus);
+
+    public List<Article> getPublicArticle();
 }

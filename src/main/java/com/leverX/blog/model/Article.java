@@ -1,7 +1,6 @@
 package com.leverX.blog.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.leverX.blog.model.dto.ArticleDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

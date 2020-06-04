@@ -2,14 +2,13 @@ package com.leverX.blog.service.impl;
 
 import com.leverX.blog.model.User;
 import com.leverX.blog.model.Role;
-import com.leverX.blog.model.dto.RegistrationRequest;
+import com.leverX.blog.model.RegistrationRequest;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

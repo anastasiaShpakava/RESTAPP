@@ -1,4 +1,4 @@
-package com.leverX.blog.model.dto;
+package com.leverX.blog.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

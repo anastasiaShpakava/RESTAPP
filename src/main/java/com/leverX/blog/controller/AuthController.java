@@ -1,9 +1,9 @@
 package com.leverX.blog.controller;
 
 import com.leverX.blog.model.User;
-import com.leverX.blog.model.dto.AuthRequest;
-import com.leverX.blog.model.dto.AuthResponse;
-import com.leverX.blog.model.dto.RegistrationRequest;
+import com.leverX.blog.model.AuthRequest;
+import com.leverX.blog.model.AuthResponse;
+import com.leverX.blog.model.RegistrationRequest;
 import com.leverX.blog.security.JwtProvider;
 import com.leverX.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

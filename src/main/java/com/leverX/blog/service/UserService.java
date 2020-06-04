@@ -1,8 +1,7 @@
 package com.leverX.blog.service;
 
 import com.leverX.blog.model.User;
-import com.leverX.blog.model.dto.RegistrationRequest;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.leverX.blog.model.RegistrationRequest;
 
 public interface UserService {
 
