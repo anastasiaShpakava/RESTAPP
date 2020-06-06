@@ -56,13 +56,6 @@ public class Article {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
     private List<Comment> comments;
 
-    public Article(ArticleDto articledto) {   // from DTO to entity
-        this.title = articledto.getTitle();
-        this.text = articledto.getText();
-        this.tags = articledto.getTags();
-        this.articleStatus = articledto.getArticleStatus();
-    }
-
     public boolean isPublic() {
         return this.articleStatus == ArticleStatus.PUBLIC;
     }

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 ;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -50,12 +51,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<Comment> getCommentsOfArticle(Integer id, int pageNumber, int pageSize, Sort sort) throws DataBaseException {
+    public List<Comment> getCommentsOfArticle(Integer id) throws DataBaseException {
         if (!articleRepository.existsById(id)) {
             throw new DataBaseException("Article with such id " + id + " doesn't exist");
         }
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort); //разбивка на стр и сортировка
-        return commentRepository.findCommentsByArticleId(id, pageRequest);
+        return commentRepository.findCommentsByArticleId(id);
     }
 }
 

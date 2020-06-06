@@ -14,9 +14,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public CustomUserDetails loadUserByUsername(String lastName) throws UsernameNotFoundException {
-        User user = userService.findByEmail(lastName);
+    public CustomUserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userService.findByEmail(login);
         return CustomUserDetails.fromUserEntityToCustomUserDetails(user);
     }
 }
-//В этом методе я достаю из базы данных моего юзера по lastName, конвертирую его в CustomUser и возвращаю
+//В этом методе я достаю из базы данных моего юзера по login, конвертирую его в CustomUser и возвращаю

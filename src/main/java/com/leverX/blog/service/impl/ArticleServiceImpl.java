@@ -1,5 +1,6 @@
 package com.leverX.blog.service.impl;
 
+import com.leverX.blog.exception.DataBaseException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.Tag;
@@ -7,6 +8,7 @@ import com.leverX.blog.repository.ArticleRepository;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.AccessControlException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,26 +34,14 @@ public class ArticleServiceImpl implements ArticleService {
     private final TagService tagService;
 
     @Override
-    public Page<Article> getArticlesPage(int pageNumber, int pageSize, Sort sort) {
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            return articleRepository.findArticlesByStatus(ArticleStatus.PUBLIC, pageRequest);
-        } else return articleRepository.findAll(pageRequest);
-    }
-
-
-    @Override
-    public Page<Article> findArticleByTag(List<String> tags, int pageNumber, int pageSize, Sort sort) {
+    public List<Article> findArticleByTag(List<String> tags) {
         tags = tags.stream().map(String::toLowerCase).collect(Collectors.toList());
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            return articleRepository.findPublicArticlesByTags(tags, pageRequest);
+            return articleRepository.findPublicArticlesByTags(tags);
         }
-        return articleRepository.findArticlesByTags(tags, pageRequest);
+        return articleRepository.findArticlesByTags(tags);
     }
-
 
     @Override
     @Transactional
@@ -84,5 +75,21 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         return publicArticles;
+    }
+
+    @Override
+    @Transactional
+    public Article getArticleForReading(Integer id) throws DataBaseException {
+        Article article = articleRepository.getOne(id);
+        if (article == null) {
+            throw new DataBaseException( "Article with such id " + id + " is not found");
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus() != ArticleStatus.PUBLIC) {
+            throw new AccessControlException("You have no permission to view this article. Please, Log in");
+        } else {
+            Hibernate.initialize(article.getTags());
+            return article;
+        }
     }
 }

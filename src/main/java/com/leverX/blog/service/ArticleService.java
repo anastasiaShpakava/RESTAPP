@@ -1,5 +1,6 @@
 package com.leverX.blog.service;
 
+import com.leverX.blog.exception.DataBaseException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
 import org.springframework.data.domain.Page;
@@ -9,10 +10,8 @@ import java.util.List;
 
 public interface ArticleService {
 
-    Page<Article> getArticlesPage(int pageNumber, int pageSize, Sort sort);
 
-
-    Page<Article> findArticleByTag(List<String> tags, int pageNumber, int pageSize, Sort sort);
+  List<Article> findArticleByTag(List<String> tags);
 
     Article saveNewArticle(Article article);
 
@@ -20,5 +19,7 @@ public interface ArticleService {
 
     void changeStatus(Integer id, ArticleStatus articleStatus);
 
-    public List<Article> getPublicArticle();
+   List<Article> getPublicArticle();
+
+    Article getArticleForReading(Integer id) throws DataBaseException;
 }

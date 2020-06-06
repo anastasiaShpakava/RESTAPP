@@ -14,5 +14,5 @@ public interface CommentService {
 
     void deleteCommentFromArticle(Comment comment, Article article);
 
-    Page<Comment> getCommentsOfArticle(Integer id, int pageNumber, int pageSize, Sort sort) throws DataBaseException;
+  List<Comment> getCommentsOfArticle(Integer id) throws DataBaseException;
 }
