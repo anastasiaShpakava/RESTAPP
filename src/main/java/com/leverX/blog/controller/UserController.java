@@ -53,7 +53,7 @@ public class UserController {
                 user.getId() + "&token=" + token;
         String message = messages.getMessage("message.resetPassword",
                 null, locale);
-        return constructEmail("Reset Password", message + " \r\n" + url, user);
+        return constructEmail("Reset Password", message + " " + url, user);
     }
 
     private SimpleMailMessage constructEmail(String subject, String body,

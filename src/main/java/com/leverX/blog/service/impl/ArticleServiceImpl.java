@@ -1,6 +1,6 @@
 package com.leverX.blog.service.impl;
 
-import com.leverX.blog.exception.DataBaseException;
+import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.Tag;
@@ -8,11 +8,8 @@ import com.leverX.blog.repository.ArticleRepository;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.TagService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,8 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired)) //
+@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final TagService tagService;
@@ -50,7 +46,6 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    @Transactional
     public Article saveNewArticle(Article newArticle) {
         return articleRepository.save(Article.builder()
                 .title(newArticle.getTitle())
@@ -61,18 +56,20 @@ public class ArticleServiceImpl implements ArticleService {
                 .build());
     }
     @Override
-    public Article getArticle(Integer id) throws DataBaseException {
+    @SneakyThrows
+    public Article getArticle(Integer id) {
         Article article = articleRepository.getOne(id);
         if (article == null) {
-            throw new DataBaseException("Article with id " + id + " not found");
+            throw new ResourceNotFoundException("Article with such id is not found");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus()!= ArticleStatus.PUBLIC) {
-            throw new AccessControlException("You have no permission to view this article. Please, Log in");
+        if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus() != ArticleStatus.PUBLIC) {
+            throw new AccessControlException("You have no permission to view this article. You should Log in");
         } else return article;
     }
-    @Transactional
+
     @Override
+    @Transactional
     public Article updateArticle(Article article) {
         article.setText(article.getText());
         article.setTitle(article.getTitle());
@@ -97,13 +94,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void changeStatus(Integer id, ArticleStatus articleStatus) {
-        articleRepository.getArticleById(id).setArticleStatus(articleStatus);
-    }
-
-
-
-    @Override
     public List<Article> getPublicArticle() {
         List<Article> publicArticles = new ArrayList<>();
         for (Article article : articleRepository.getAll()) {
@@ -114,16 +104,17 @@ public class ArticleServiceImpl implements ArticleService {
         return publicArticles;
     }
 
+    @SneakyThrows
     @Override
     @Transactional
-    public Article getArticleForReading(Integer id) throws DataBaseException {
+    public Article getArticleForReading(Integer id)  {
         Article article = articleRepository.getOne(id);
         if (article == null) {
-            throw new DataBaseException( "Article with such id " + id + " is not found");
+            throw new ResourceNotFoundException( "Article with such id is not found");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus() != ArticleStatus.PUBLIC) {
-            throw new AccessControlException("You have no permission to view this article. Please, Log in");
+            throw new AccessControlException("You have no permission to view this article. You should Log in");
         } else {
             Hibernate.initialize(article.getTags());
             return article;

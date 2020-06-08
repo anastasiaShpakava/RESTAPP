@@ -1,12 +1,11 @@
 package com.leverX.blog.controller;
 
-import com.leverX.blog.exception.DataBaseException;
+import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.Comment;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +22,7 @@ public class CommentsController {
     @PostMapping(value = "articles/{articleId}/comments")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Comment createComment( @Valid @RequestBody Comment comment) throws DataBaseException {
+    public Comment createComment( @Valid @RequestBody Comment comment) throws ResourceNotFoundException {
         Comment savedComment = commentService.saveNewComment(comment);
         return savedComment;
     }
@@ -32,7 +31,7 @@ public class CommentsController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<Comment> getArticleCommentsList(@PathVariable("articleId") Integer articleId,
                                                 @RequestParam(value = "skip", defaultValue = "0") int skip,
-                                                @RequestParam(value = "limit", defaultValue = "10") int limit) throws DataBaseException {
+                                                @RequestParam(value = "limit", defaultValue = "10") int limit) throws ResourceNotFoundException {
 
         List<Comment> commentPage = commentService.getCommentsOfArticle(articleId,  PageRequest.of(skip / limit, limit));
         return commentPage;
@@ -40,7 +39,7 @@ public class CommentsController {
 
     @GetMapping(value = "/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Comment showComment(@PathVariable("articleId") Integer articleId, @PathVariable("commentId") Integer commentId) throws DataBaseException {
+    public Comment showComment(@PathVariable("articleId") Integer articleId, @PathVariable("commentId") Integer commentId) throws ResourceNotFoundException {
         Comment comment = commentService.getCommentById(commentId, articleId);
         return comment;
     }
@@ -48,7 +47,7 @@ public class CommentsController {
     @DeleteMapping(value = "/articles/{articleId}/comments/{commentId}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteComment(@PathVariable("articleId") Integer articleId, @PathVariable("commentId") Integer commentId) throws DataBaseException {
+    public void deleteComment(@PathVariable("articleId") Integer articleId, @PathVariable("commentId") Integer commentId) throws ResourceNotFoundException {
         Article article = articleService.getArticle(articleId);
         Comment comment = commentService.getCommentById(commentId, articleId);
         commentService.deleteCommentFromArticle(comment, article);

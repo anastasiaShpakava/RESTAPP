@@ -10,14 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
+
     @Override
-    @Transactional
     public Tag saveTag(Tag tag) {
-        return tagRepository.findTagByName(tag.getName());
+        if (tagRepository.findTagByName(tag.getName()) == null) {
+            return tagRepository.saveAndFlush(tag);
+        } else return tagRepository.findTagByName(tag.getName());
     }
 }
+

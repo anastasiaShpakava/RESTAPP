@@ -1,15 +1,11 @@
 package com.leverX.blog.controller;
 
 
-import com.leverX.blog.exception.DataBaseException;
+import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.CustomUserDetails;
 import com.leverX.blog.service.ArticleService;
-import com.leverX.blog.service.UserService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -31,7 +26,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping(value = "/articles/{articleId}")
-    public ResponseEntity<Article> getArticle(@PathVariable("id") Integer id) throws DataBaseException {
+    public ResponseEntity<Article> getArticle(@PathVariable("id") Integer id) throws ResourceNotFoundException {
         Article article = articleService.getArticleForReading(id);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
@@ -63,7 +58,7 @@ public class ArticleController {
     @DeleteMapping(value = "articles/{articleId}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteArticle(@PathVariable("articleId") Integer articleId) throws DataBaseException {
+    public void deleteArticle(@PathVariable("articleId") Integer articleId) throws ResourceNotFoundException {
         Article article = articleService.getArticle(articleId);
         articleService.deleteArticle(article);
     }
@@ -81,7 +76,7 @@ public class ArticleController {
     @PutMapping(value = "articles/{articleId}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.OK)
-    public Article updateArticle(@Valid @RequestBody Article updatedData, @PathVariable("articleId") Integer articleId) throws DataBaseException {
+    public Article updateArticle(@Valid @RequestBody Article updatedData, @PathVariable("articleId") Integer articleId) throws ResourceNotFoundException {
 
         Article updatedArticle = articleService.updateArticle(updatedData);
         return updatedArticle;
