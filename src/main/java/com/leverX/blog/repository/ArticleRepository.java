@@ -32,6 +32,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> getAll() ;
 
+    @Query("SELECT a FROM Article a JOIN a.user u WHERE u.login=:userLogin")
+    List<Article> findArticlesByUserId(@Param("userID") String userLogin);
+
 
 
 

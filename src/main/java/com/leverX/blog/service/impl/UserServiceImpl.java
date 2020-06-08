@@ -1,19 +1,27 @@
 package com.leverX.blog.service.impl;
 
+import com.leverX.blog.model.PasswordResetToken;
 import com.leverX.blog.model.User;
 import com.leverX.blog.model.Role;
 import com.leverX.blog.model.RegistrationRequest;
+import com.leverX.blog.repository.PasswordResetTokenRepository;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Calendar;
 
 
 @Service
@@ -23,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private PasswordResetTokenRepository passwordTokenRepository;
 
     @Override
     public User findByEmail(String email) {
@@ -64,6 +73,49 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public void createPasswordResetTokenForUser(final User user, final String token) {
+        final PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(myToken);
+    }
+
+
+    @Override
+
+        //  если токен действителен, пользователь получит право сменить свой пароль,
+        //  предоставив ему CHANGE PASSWORD PRIVILEGE и направив его на страницу для обновления
+        //  своего пароля
+        public String validatePasswordResetToken(long id, String token) {
+            PasswordResetToken passToken =
+                    passwordTokenRepository.findByToken(token);
+            if ((passToken == null) || (passToken.getUser()
+                    .getId() != id)) {
+                return "invalidToken";
+            }
+
+            Calendar cal = Calendar.getInstance();  //проверяет, истекла ли ссылка
+            if ((passToken.getExpiryDate()
+                    .getTime() - cal.getTime()
+                    .getTime()) <= 0) {
+                return "expired";
+            }
+
+            User user = passToken.getUser();
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    user, null, Arrays.asList(
+                    new SimpleGrantedAuthority("CHANGE__PASSWORD__PRIVILEGE")));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            return null;
+        }
+
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+      userRepository.save(user);
+    }
 }
+
+
 
 

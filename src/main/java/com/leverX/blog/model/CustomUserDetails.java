@@ -12,6 +12,7 @@ public class CustomUserDetails implements UserDetails {
 
     private String login;
     private String password;
+    private Integer id;
 
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
@@ -20,6 +21,7 @@ public class CustomUserDetails implements UserDetails {
 
         customUserDetails.login=user.getLogin();
         customUserDetails.password=user.getPassword();
+        customUserDetails.id=user.getId();
         customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
         return customUserDetails;
     }

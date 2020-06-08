@@ -12,8 +12,9 @@ public interface ArticleService {
 
 
   List<Article> findArticleByTag(List<String> tags);
+    Article updateArticle(Article article);
 
-
+List <Article> findArticleByUserLogin(String userLogin);
 
     Article saveNewArticle(Article article);
 
@@ -24,4 +25,6 @@ public interface ArticleService {
    List<Article> getPublicArticle();
 
     Article getArticleForReading(Integer id) throws DataBaseException;
+
+    Article getArticle(Integer id) throws DataBaseException;
 }

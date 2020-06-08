@@ -44,6 +44,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<Article> findArticleByUserLogin(String userLogin) {
+        return articleRepository.findArticlesByUserId(userLogin);
+    }
+
+
+    @Override
     @Transactional
     public Article saveNewArticle(Article newArticle) {
         return articleRepository.save(Article.builder()
@@ -54,6 +60,35 @@ public class ArticleServiceImpl implements ArticleService {
                 .updatedAt(LocalDateTime.now())
                 .build());
     }
+    @Override
+    public Article getArticle(Integer id) throws DataBaseException {
+        Article article = articleRepository.getOne(id);
+        if (article == null) {
+            throw new DataBaseException("Article with id " + id + " not found");
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus()!= ArticleStatus.PUBLIC) {
+            throw new AccessControlException("You have no permission to view this article. Please, Log in");
+        } else return article;
+    }
+    @Transactional
+    @Override
+    public Article updateArticle(Article article) {
+        article.setText(article.getText());
+        article.setTitle(article.getTitle());
+        article.setUpdatedAt(LocalDateTime.now());
+        article.setArticleStatus(article.getArticleStatus());
+        if (article.getTags() != null) {
+            Collection<Tag> editedTags = article.getTags();
+            Collection<Tag> articleTags = new ArrayList<>();
+            for (Tag tag : editedTags) {
+                articleTags.add(tagService.saveTag(tag));
+            }
+            article.setTags(articleTags);
+        }
+        return articleRepository.saveAndFlush(article);
+    }
+
 
     @Override
     @Transactional
@@ -65,6 +100,8 @@ public class ArticleServiceImpl implements ArticleService {
     public void changeStatus(Integer id, ArticleStatus articleStatus) {
         articleRepository.getArticleById(id).setArticleStatus(articleStatus);
     }
+
+
 
     @Override
     public List<Article> getPublicArticle() {

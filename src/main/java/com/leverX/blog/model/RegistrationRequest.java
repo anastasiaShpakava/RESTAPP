@@ -1,13 +1,11 @@
 package com.leverX.blog.model;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+
 
 @Data
 public class RegistrationRequest {
@@ -19,7 +17,6 @@ public class RegistrationRequest {
     private String password;
 
     @NotEmpty
-    @Email
     private String email;
 
     @NotEmpty

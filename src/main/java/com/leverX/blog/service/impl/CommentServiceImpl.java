@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +51,25 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(comment.getId());
     }
 
+
     @Override
-    public List<Comment> getCommentsOfArticle(Integer id) throws DataBaseException {
+    public List<Comment> getCommentsOfArticle(Integer id, Pageable pageable) throws DataBaseException {
         if (!articleRepository.existsById(id)) {
-            throw new DataBaseException("Article with such id " + id + " doesn't exist");
+            throw new DataBaseException("Article with id " + id + " doesn't exist");
         }
-        return commentRepository.findCommentsByArticleId(id);
+
+        return commentRepository.findCommentsByArticleId(id,pageable);
+    }
+
+    @Override
+    public Comment getCommentById(Integer commentId, Integer articleId) throws DataBaseException {
+        if (!articleRepository.existsById(articleId)) {
+            throw new DataBaseException("Article with such id " + articleId + " doesn't exists");
+        }
+        Comment comment = commentRepository.getOne(commentId);
+        if (comment == null) {
+            throw new DataBaseException("Comment with id " + commentId + " doesn't exist");
+        } else return comment;
     }
 }
 

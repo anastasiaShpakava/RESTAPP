@@ -1,5 +1,6 @@
 package com.leverX.blog.service;
 
+import com.leverX.blog.model.PasswordResetToken;
 import com.leverX.blog.model.User;
 import com.leverX.blog.model.RegistrationRequest;
 
@@ -14,4 +15,11 @@ public interface UserService {
     User createUser(RegistrationRequest registrationRequest);
 
     User findByLoginAndPassword(String login, String password);
+
+
+    void createPasswordResetTokenForUser(User user, String token);
+
+    String validatePasswordResetToken(long id, String token);//для смены пароля
+
+    void changeUserPassword(User user, String password);
 }

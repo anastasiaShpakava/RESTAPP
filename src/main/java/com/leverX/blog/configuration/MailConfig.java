@@ -46,7 +46,6 @@ public class MailConfig {
     @Bean
 
     public MessageSource messageSource() {
-
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/resources/message");
         messageSource.setDefaultEncoding("UTF-8");

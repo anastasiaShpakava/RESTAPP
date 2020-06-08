@@ -4,6 +4,7 @@ import com.leverX.blog.exception.DataBaseException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.Comment;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface CommentService {
 
     void deleteCommentFromArticle(Comment comment, Article article);
 
-  List<Comment> getCommentsOfArticle(Integer id) throws DataBaseException;
+  List<Comment> getCommentsOfArticle(Integer id, Pageable pageable) throws DataBaseException;
+    Comment getCommentById(Integer commentId, Integer articleId) throws DataBaseException;
 }
