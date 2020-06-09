@@ -1,10 +1,15 @@
 package com.leverX.blog.service;
 
 
-import com.leverX.blog.model.RegistrationRequest;
+import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.model.User;
 
 
+/**
+ * Interface for {@link by.epam.project.service.impl.TicketServiceImpl}
+ *
+ * @author Shpakova A.
+ */
 public interface UserService {
 
     User findByEmail(String email);
@@ -17,7 +22,11 @@ public interface UserService {
 
     User findByLoginAndPassword(String login, String password);
 
-    void createPasswordResetTokenForUser(User user, String token);
+    /**
+     * Method: create new token for user
+     *
+     */
+    void createPasswordResetTokenForUser(String token, User user);
 
     String validatePasswordResetToken(long id, String token);//для смены пароля
 

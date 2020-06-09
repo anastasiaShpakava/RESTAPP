@@ -1,4 +1,4 @@
-package com.leverX.blog.model;
+package com.leverX.blog.model.dto;
 
 
 import lombok.Data;
@@ -6,7 +6,11 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-
+/**
+ * This class is for storing  data for registration
+ *
+ * @author Shpakova A.
+ */
 @Data
 public class RegistrationRequest {
 
@@ -15,14 +19,5 @@ public class RegistrationRequest {
 
     @NotEmpty
     private String password;
-
-    @NotEmpty
-    private String email;
-
-    @NotEmpty
-    private String firstName;
-
-    @NotEmpty
-    private String lastName;
 
 }

@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * This class is for storing comment's data
+ *
+ * @author Shpakova A.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,6 +37,5 @@ public class Comment {
     private User user;
 
     @Column(name = "created_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 }

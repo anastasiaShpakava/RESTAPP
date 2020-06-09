@@ -1,16 +1,15 @@
 package com.leverX.blog.service.impl;
 
-import com.leverX.blog.model.PasswordResetToken;
+import com.leverX.blog.model.dto.PasswordResetToken;
 import com.leverX.blog.model.User;
 import com.leverX.blog.model.Role;
-import com.leverX.blog.model.RegistrationRequest;
+import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.repository.PasswordResetTokenRepository;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -74,8 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createPasswordResetTokenForUser(final User user, final String token) {
-        final PasswordResetToken myToken = new PasswordResetToken(token, user);
+    public void createPasswordResetTokenForUser(String token, User user) {
+    PasswordResetToken myToken = new PasswordResetToken(token, user);
         passwordTokenRepository.save(myToken);
     }
 

@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * This class implements {@link ActivityService}
+ *
+ * @author Shpakova A.
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {

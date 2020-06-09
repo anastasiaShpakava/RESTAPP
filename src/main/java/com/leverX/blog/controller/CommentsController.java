@@ -31,7 +31,7 @@ public class CommentsController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<Comment> getArticleCommentsList(@PathVariable("articleId") Integer articleId,
                                                 @RequestParam(value = "skip", defaultValue = "0") int skip,
-                                                @RequestParam(value = "limit", defaultValue = "10") int limit) throws ResourceNotFoundException {
+                                                @RequestParam(value = "limit", defaultValue = "10") int limit)  {
 
         List<Comment> commentPage = commentService.getCommentsOfArticle(articleId,  PageRequest.of(skip / limit, limit));
         return commentPage;

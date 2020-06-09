@@ -12,28 +12,34 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * Interface for actions with {@link Article}
+ *
+ * @author Shpakova A.
+ */
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-   List <Article> findArticlesByLogin(String userLogin);
+ // List <Article> findArticlesByLogin(String userLogin);
 
-    @Query("SELECT a FROM Article a JOIN a.tags t WHERE LOWER  (t.name) IN :tags")
-        //в нижн. регистр
-    List <Article> findArticlesByTags(@Param("tags") Collection<String> tags);
+    @Query("SELECT a FROM Article a JOIN a.tags t WHERE LOWER  (t.name) IN :tags")   //в нижн. регистр
+    Page <Article> findByTags(@Param("tags") Collection<String> tags,Pageable pageable);
 
     @Query("SELECT a FROM Article a JOIN a.tags t WHERE LOWER(t.name) in (:tags) and a.articleStatus = 'PUBLIC'")
-   List<Article> findPublicArticlesByTags(@Param("tags") Collection<String> tags);
+    Page<Article> findPublicArticlesByTags(@Param("tags") Collection<String> tags,Pageable pageable);
 
 
-   List<Article> findArticlesByStatus(ArticleStatus articleStatus);
+ //  List<Article> findArticlesByStatus(ArticleStatus articleStatus);
 
-    void delete(Integer id); //?
+  //  void delete(Integer id); //?
 
-    Article getArticleById(Integer id);
+  //  Article getArticleById(Integer id);
 
-    List<Article> getAll() ;
+    //List<Article> getAll() ;
 
-    @Query("SELECT a FROM Article a JOIN a.user u WHERE u.login=:userLogin")
-    List<Article> findArticlesByUserId(@Param("userID") String userLogin);
+    Page<Article> findAllByStatus(ArticleStatus status, Pageable pageable);
+
+   // @Query("SELECT a FROM Article a JOIN a.user u WHERE u.login=:userLogin")
+   // List<Article> findArticlesByUserId(@Param("userID") String userLogin);
 
 
 

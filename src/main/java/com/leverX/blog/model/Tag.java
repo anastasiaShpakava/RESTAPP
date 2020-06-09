@@ -6,11 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
+
+/**
+ * This class is for storing tag's data
+ *
+ * @author Shpakova A.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +27,6 @@ public class Tag {
     @Column
     private String name;
 
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "article_tag", schema = "blog",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),

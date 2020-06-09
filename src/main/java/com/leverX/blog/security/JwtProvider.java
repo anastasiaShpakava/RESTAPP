@@ -9,6 +9,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * This class is for manipulating the data that will be placed in the token.
+ *
+ * @author Shpakova A.
+ */
+
 @Component
 @Slf4j
 public class JwtProvider {

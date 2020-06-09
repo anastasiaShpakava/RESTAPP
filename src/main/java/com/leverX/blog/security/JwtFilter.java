@@ -1,9 +1,8 @@
 package com.leverX.blog.security;
 
-import com.leverX.blog.model.CustomUserDetails;
+import com.leverX.blog.model.dto.CustomUserDetails;
 import com.leverX.blog.service.impl.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,11 +23,14 @@ public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public JwtFilter(JwtProvider jwtProvider, CustomUserDetailsService customUserDetailsService) {
+        this.jwtProvider = jwtProvider;
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

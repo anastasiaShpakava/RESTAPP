@@ -10,6 +10,10 @@ import com.leverX.blog.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -66,6 +70,15 @@ public class ArticleServiceImpl implements ArticleService {
         if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus() != ArticleStatus.PUBLIC) {
             throw new AccessControlException("You have no permission to view this article. You should Log in");
         } else return article;
+    }
+
+    @Override
+    public Page<Article> getArticlesPage(Pageable pageable) {
+        PageRequest pageRequest = PageRequest.of(0,10, Sort.Direction.ASC, "lastName");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return articleRepository.findAllByStatus(ArticleStatus.PUBLIC, pageRequest);
+        }else return articleRepository.findAll(pageRequest);
     }
 
     @Override

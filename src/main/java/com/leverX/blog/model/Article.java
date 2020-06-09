@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This class is for storing article's data
+ *
+ * @author Shpakova A.
+ */
 
 @Data
 @NoArgsConstructor
@@ -39,11 +44,9 @@ public class Article {
     private User user;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime updatedAt;
 
 
