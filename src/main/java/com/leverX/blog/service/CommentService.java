@@ -1,23 +1,25 @@
 package com.leverX.blog.service;
 
 
-import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.Comment;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
-import java.util.List;
-
+/**
+ * Interface for {@link com.leverX.blog.service.impl.CommentServiceImpl}
+ *
+ * @author Shpakova A.
+ */
 
 public interface CommentService {
 
-    Comment saveNewComment(Comment comment) throws ResourceNotFoundException;
+    Comment saveNewComment(Comment comment, Integer articleId);
 
     void deleteCommentFromArticle(Comment comment, Article article);
 
-    List<Comment> getCommentsOfArticle(Integer id, Pageable pageable);
+    Page<Comment> getCommentsOfArticle(Integer id, Pageable pageable);
 
     Comment getCommentById(Integer commentId, Integer articleId);
 }

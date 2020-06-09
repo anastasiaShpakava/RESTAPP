@@ -1,33 +1,37 @@
 package com.leverX.blog.service;
 
 
-import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
+import com.leverX.blog.model.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
 
+/**
+ * Interface for {@link com.leverX.blog.service.impl.ArticleServiceImpl}
+ *
+ * @author Shpakova A.
+ */
 public interface ArticleService {
 
+    Page<Article> findArticleByTag(List<String> tags,Pageable pageable);
 
-    List<Article> findArticleByTag(List<String> tags);
+    Article updateArticle(Article article, ArticleDTO editedData);
 
-    Article updateArticle(Article article);
-
-    List<Article> findArticleByUserLogin(String userLogin);
+    Page<Article> findArticleByUserId(String userLogin,Pageable pageable);
 
     Article saveNewArticle(Article article);
 
     void deleteArticle(Article article);
 
-    List<Article> getPublicArticle();
-
     Article getArticleForReading(Integer id);
 
     Article getArticle(Integer id);
 
-Page<Article> getArticlesPage (Pageable pageable);
+    void changeStatus(Integer id, ArticleStatus status);
+
+    Page<Article> getArticlesPage (Pageable pageable);
 }

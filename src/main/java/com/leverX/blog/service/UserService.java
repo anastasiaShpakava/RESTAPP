@@ -6,7 +6,7 @@ import com.leverX.blog.model.User;
 
 
 /**
- * Interface for {@link by.epam.project.service.impl.TicketServiceImpl}
+ * Interface for {@link com.leverX.blog.service.impl.UserServiceImpl}
  *
  * @author Shpakova A.
  */
@@ -21,6 +21,7 @@ public interface UserService {
     User createUser(RegistrationRequest registrationRequest);
 
     User findByLoginAndPassword(String login, String password);
+    User currentUser();
 
     /**
      * Method: create new token for user

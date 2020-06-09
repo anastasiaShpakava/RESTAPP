@@ -17,6 +17,11 @@ import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
 
+/**
+ * This filter is used to filter servlet requests.
+ *
+ * @author Shpakova A.
+ */
 @Component
 @Slf4j
 public class JwtFilter extends GenericFilterBean {

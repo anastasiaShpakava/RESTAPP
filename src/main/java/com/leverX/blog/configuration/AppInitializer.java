@@ -2,6 +2,11 @@ package com.leverX.blog.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+
+/**
+ * This class is for registration a DispatcherServlet and use Java-based Spring configuration.
+ * @author Shpakova A.
+ */
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -10,7 +15,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{WebConfig.class, SecurityConfig.class};
+        return new Class[]{SecurityConfig.class};
     }
 
     @Override

@@ -18,10 +18,12 @@ import javax.validation.Valid;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * @author Shpakova A.
+ */
 
 @RestController
 @RequiredArgsConstructor
-
 public class UserController {
 
     private final UserService userService;
@@ -29,8 +31,8 @@ public class UserController {
     private final JavaMailSender mailSender;
 
 
- @PostMapping(value = "/user/resetPassword")
- @ResponseBody
+    @PostMapping(value = "/auth/resetPassword")
+    @ResponseBody
     public GenericResponse resetPassword(HttpServletRequest request,
                                          @RequestParam("email") String userEmail) throws UserNotFoundException {
         User user = userService.findByEmail(userEmail);
@@ -66,7 +68,7 @@ public class UserController {
         return email;
     }
 
-    @GetMapping(value = "/user/changePassword")
+    @GetMapping(value = "/auth/changePassword")
     public String showChangePasswordPage(Locale locale, Model model,
                                          @RequestParam("id") long id, @RequestParam("token") String token) {
         String result = userService.validatePasswordResetToken(id, token);
@@ -78,7 +80,7 @@ public class UserController {
         return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
     }
 
- @PostMapping(value = "/user/savePassword")
+    @PostMapping(value = "/auth/savePassword")
     @ResponseBody
     public GenericResponse savePassword(Locale locale, @Valid PasswordDTO password) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

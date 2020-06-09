@@ -1,9 +1,14 @@
 package com.leverX.blog.repository;
 
 import com.leverX.blog.model.Tag;
+import com.leverX.blog.model.dto.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+/**
+ * Interface for actions with {@link Tag}
+ *
+ * @author Shpakova A.
+ */
 
 public interface TagRepository extends JpaRepository<Tag, Integer> {
  Tag findTagByName(String name);

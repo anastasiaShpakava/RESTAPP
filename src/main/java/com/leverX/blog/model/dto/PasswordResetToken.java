@@ -2,10 +2,8 @@ package com.leverX.blog.model.dto;
 
 
 import com.leverX.blog.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
 
 import javax.persistence.*;
 import java.util.Date;

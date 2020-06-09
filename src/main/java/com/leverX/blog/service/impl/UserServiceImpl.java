@@ -22,6 +22,11 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 
+/**
+ * This class implements {@link UserService}
+ *
+ * @author Shpakova A.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +75,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public User currentUser() {
+      return   (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override

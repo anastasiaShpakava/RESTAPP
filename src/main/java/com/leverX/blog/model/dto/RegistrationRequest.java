@@ -1,7 +1,7 @@
 package com.leverX.blog.model.dto;
 
-
 import lombok.Data;
+
 
 
 import javax.validation.constraints.NotEmpty;
@@ -19,5 +19,14 @@ public class RegistrationRequest {
 
     @NotEmpty
     private String password;
+
+    @NotEmpty
+    private String email;
+
+    @NotEmpty
+    private String lastName;
+
+    @NotEmpty
+    private String firstName;
 
 }

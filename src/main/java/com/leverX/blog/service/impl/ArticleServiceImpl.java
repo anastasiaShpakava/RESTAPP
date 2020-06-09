@@ -4,6 +4,7 @@ import com.leverX.blog.exception.ResourceNotFoundException;
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.Tag;
+import com.leverX.blog.model.dto.ArticleDTO;
 import com.leverX.blog.repository.ArticleRepository;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.TagService;
@@ -27,6 +28,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class implements {@link ArticleService}
+ *
+ * @author Shpakova A.
+ */
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
@@ -34,20 +40,15 @@ public class ArticleServiceImpl implements ArticleService {
     private final TagService tagService;
 
     @Override
-    public List<Article> findArticleByTag(List<String> tags) {
+    public Page<Article> findArticleByTag(List<String> tags, Pageable pageable) {
         tags = tags.stream().map(String::toLowerCase).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            return articleRepository.findPublicArticlesByTags(tags);
+            return articleRepository.findPublicArticlesByTags(tags, pageRequest);
         }
-        return articleRepository.findArticlesByTags(tags);
+        return articleRepository.findArticlesByTags(tags, pageRequest);
     }
-
-    @Override
-    public List<Article> findArticleByUserLogin(String userLogin) {
-        return articleRepository.findArticlesByUserId(userLogin);
-    }
-
 
     @Override
     public Article saveNewArticle(Article newArticle) {
@@ -59,6 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .updatedAt(LocalDateTime.now())
                 .build());
     }
+
     @Override
     @SneakyThrows
     public Article getArticle(Integer id) {
@@ -73,30 +75,41 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void changeStatus(Integer id, ArticleStatus status) {
+        articleRepository.getOne(id).setArticleStatus(status);
+    }
+
+    @Override
     public Page<Article> getArticlesPage(Pageable pageable) {
-        PageRequest pageRequest = PageRequest.of(0,10, Sort.Direction.ASC, "lastName");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             return articleRepository.findAllByStatus(ArticleStatus.PUBLIC, pageRequest);
-        }else return articleRepository.findAll(pageRequest);
+        } else return articleRepository.findAll(pageRequest);
     }
 
     @Override
     @Transactional
-    public Article updateArticle(Article article) {
-        article.setText(article.getText());
-        article.setTitle(article.getTitle());
+    public Article updateArticle(Article article, ArticleDTO editedArticle) {
+        article.setText(editedArticle.getText());
+        article.setTitle(editedArticle.getTitle());
         article.setUpdatedAt(LocalDateTime.now());
-        article.setArticleStatus(article.getArticleStatus());
+        article.setArticleStatus(editedArticle.getArticleStatus());
         if (article.getTags() != null) {
-            Collection<Tag> editedTags = article.getTags();
+            Collection<Tag> editedTags = editedArticle.getTags();
             Collection<Tag> articleTags = new ArrayList<>();
             for (Tag tag : editedTags) {
                 articleTags.add(tagService.saveTag(tag));
             }
             article.setTags(articleTags);
         }
-        return articleRepository.saveAndFlush(article);
+        return articleRepository.save(article);
+    }
+
+    @Override
+    public Page<Article> findArticleByUserId(String userLogin, Pageable pageable) {
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
+        return articleRepository.findAllByUserLogin(userLogin, pageRequest);
     }
 
 
@@ -106,24 +119,13 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.delete(article.getId());
     }
 
-    @Override
-    public List<Article> getPublicArticle() {
-        List<Article> publicArticles = new ArrayList<>();
-        for (Article article : articleRepository.getAll()) {
-            if (article.getArticleStatus().equals(ArticleStatus.PUBLIC)) {
-                publicArticles.add(article);
-            }
-        }
-        return publicArticles;
-    }
-
     @SneakyThrows
     @Override
     @Transactional
-    public Article getArticleForReading(Integer id)  {
+    public Article getArticleForReading(Integer id) {
         Article article = articleRepository.getOne(id);
         if (article == null) {
-            throw new ResourceNotFoundException( "Article with such id is not found");
+            throw new ResourceNotFoundException("Article with such id is not found");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken && article.getArticleStatus() != ArticleStatus.PUBLIC) {

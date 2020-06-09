@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Locale;
 
+/**
+ * @author Shpakova A.
+ */
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
