@@ -6,6 +6,8 @@ import com.leverX.blog.model.dto.PasswordDTO;
 import com.leverX.blog.model.User;
 import com.leverX.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,9 +28,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-    private final MessageSource messages;
-    private final JavaMailSender mailSender;
+    private UserService userService;
+
+    private MessageSource messages;
+
+    private JavaMailSender mailSender;
 
 
     @PostMapping(value = "/auth/resetPassword")

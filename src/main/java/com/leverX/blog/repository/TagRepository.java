@@ -1,8 +1,8 @@
 package com.leverX.blog.repository;
 
 import com.leverX.blog.model.Tag;
-import com.leverX.blog.model.dto.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 
 /**
  * Interface for actions with {@link Tag}

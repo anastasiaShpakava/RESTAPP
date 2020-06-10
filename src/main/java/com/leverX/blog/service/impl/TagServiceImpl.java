@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
-    private TagRepository tagRepository;
-
+    private final TagRepository tagRepository;
     @Override
     public Tag saveTag(Tag tag) {
         if (tagRepository.findTagByName(tag.getName()) == null) {

@@ -3,6 +3,7 @@ package com.leverX.blog.service;
 
 import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.model.User;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -10,6 +11,7 @@ import com.leverX.blog.model.User;
  *
  * @author Shpakova A.
  */
+
 public interface UserService {
 
     User findByEmail(String email);

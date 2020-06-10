@@ -4,21 +4,21 @@ import com.leverX.blog.model.dto.CustomUserDetails;
 import com.leverX.blog.model.User;
 import com.leverX.blog.service.CommentService;
 import com.leverX.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
- *
  * @author Shpakova A.
  */
-@Component
-public class CustomUserDetailsService implements UserDetailsService {
-    private final UserService userService;
 
-    public CustomUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
+@Component
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+    private UserService userService;
 
     @Override
     public CustomUserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

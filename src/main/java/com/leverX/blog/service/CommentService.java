@@ -6,12 +6,14 @@ import com.leverX.blog.model.Comment;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 /**
  * Interface for {@link com.leverX.blog.service.impl.CommentServiceImpl}
  *
  * @author Shpakova A.
  */
+
 
 public interface CommentService {
 

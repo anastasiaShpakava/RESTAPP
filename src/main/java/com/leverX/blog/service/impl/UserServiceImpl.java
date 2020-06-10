@@ -10,6 +10,7 @@ import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,9 +32,13 @@ import java.util.Calendar;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
+
+    private  UserRepository userRepository;
+
+    private  RoleRepository roleRepository;
+
+    private  PasswordEncoder passwordEncoder;
+
     private PasswordResetTokenRepository passwordTokenRepository;
 
     @Override

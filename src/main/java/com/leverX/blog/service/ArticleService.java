@@ -6,6 +6,7 @@ import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  *
  * @author Shpakova A.
  */
+
 public interface ArticleService {
 
     Page<Article> findArticleByTag(List<String> tags,Pageable pageable);

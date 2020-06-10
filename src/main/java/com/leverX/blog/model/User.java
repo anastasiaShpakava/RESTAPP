@@ -47,19 +47,19 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "role",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Collection<Role> roles;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Article> articles;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Comment> comments;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Article> articles;
+//
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Comment> comments;
 }

@@ -28,9 +28,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class ArticleController {
+
     private final UserService userService;
+
     private final ArticleService articleService;
+
     private final ModelMapper modelMapper;
+
 
     @GetMapping(value = "/articles/{articleId}")
     public ArticleDTO showArticle(@PathVariable("articleId") Integer articleId) {
