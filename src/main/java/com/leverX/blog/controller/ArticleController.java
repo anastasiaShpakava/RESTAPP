@@ -9,6 +9,7 @@ import com.leverX.blog.model.dto.CustomUserDetails;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -44,6 +45,7 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/articles")
+    @Cacheable("article")
     public Page<ArticleDTO> getPublicArticles() {
         Page<Article> articlePage = articleService.getArticlesPage(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "createdAt")));
         return articlePage.map(article -> modelMapper.map(article, ArticleDTO.class));

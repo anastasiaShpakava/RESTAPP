@@ -13,11 +13,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserService userService;
+
     public CustomUserDetailsService(UserService userService) {
         this.userService = userService;
     }
 
-    private final UserService userService;
+
 
     @Override
     public CustomUserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

@@ -44,12 +44,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable (value = "user")
+    @Cacheable ("user")
     public User findByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
 
     @Override
+    @Cacheable("user")  //кэшируем возвращамые данные
     public User findByLogin(String login) {
         return userRepository.findByLoginIgnoreCase(login);
     }
