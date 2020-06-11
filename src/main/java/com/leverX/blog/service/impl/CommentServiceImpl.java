@@ -24,11 +24,17 @@ import java.time.LocalDateTime;
  *
  * @author Shpakova A.
  */
-@Service
-@RequiredArgsConstructor
+@Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
     private final UserService userService;
+
+    public CommentServiceImpl(UserService userService, CommentRepository commentRepository, ArticleRepository articleRepository) {
+        this.userService = userService;
+        this.commentRepository = commentRepository;
+        this.articleRepository = articleRepository;
+    }
+
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
 

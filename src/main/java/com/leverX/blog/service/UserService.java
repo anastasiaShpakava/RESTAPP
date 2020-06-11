@@ -20,8 +20,6 @@ public interface UserService {
 
     User save(User user);
 
-    User createUser(RegistrationRequest registrationRequest);
-
     User findByLoginAndPassword(String login, String password);
     User currentUser();
 

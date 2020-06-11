@@ -21,12 +21,17 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequiredArgsConstructor
 public class CommentsController {
 
     private final CommentService commentService;
     private final ArticleService articleService;
     private final ModelMapper modelMapper;
+
+    public CommentsController(CommentService commentService, ArticleService articleService, ModelMapper modelMapper) {
+        this.commentService = commentService;
+        this.articleService = articleService;
+        this.modelMapper = modelMapper;
+    }
 
     @PostMapping(value = "articles/{articleId}/comments")
     @PreAuthorize("isAuthenticated()")

@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
  *
  * @author Shpakova A.
  */
-@Service
-@RequiredArgsConstructor
+@Service("tagService")
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
+    public TagServiceImpl(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
     @Override
     public Tag saveTag(Tag tag) {
         if (tagRepository.findTagByName(tag.getName()) == null) {

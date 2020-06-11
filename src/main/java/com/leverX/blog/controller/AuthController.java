@@ -7,7 +7,6 @@ import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.security.JwtProvider;
 import com.leverX.blog.service.UserService;
 import com.leverX.blog.util.GenericResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,13 +22,19 @@ import java.util.Locale;
  * @author Shpakova A.
  */
 @RestController
-@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final MessageSource messages;
     private final JavaMailSender mailSender;
+
+    public AuthController(UserService userService, JwtProvider jwtProvider, MessageSource messages, JavaMailSender mailSender) {
+        this.userService = userService;
+        this.jwtProvider = jwtProvider;
+        this.messages = messages;
+        this.mailSender = mailSender;
+    }
 
     @PostMapping("/register")
     public GenericResponse registerUser(@RequestBody @Valid RegistrationRequest registrationRequest, HttpServletRequest request) {

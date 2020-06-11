@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class is for storing article's data
@@ -58,7 +58,14 @@ public class Article {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "article")
     private List<Comment> comments;
 
-    public boolean isPublic() {
-        return this.articleStatus == ArticleStatus.PUBLIC;
+    public Article(String title, String text, ArticleStatus status, User user, LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> comments, Set<Tag> tags) {
+        this.title = title;
+        this.text = text;
+        this.articleStatus = status;
+        this.user = user;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.comments = comments;
+        this.tags = tags;
     }
 }

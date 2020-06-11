@@ -3,6 +3,7 @@ package com.leverX.blog.service;
 
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
+import com.leverX.blog.model.Tag;
 import com.leverX.blog.model.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public interface ArticleService {
 
     Page<Article> findArticleByUserId(String userLogin,Pageable pageable);
 
-    Article saveNewArticle(Article article);
+    Article saveNewArticle(Article newArticle);
 
     void deleteArticle(Article article);
 

@@ -1,6 +1,8 @@
 package com.leverX.blog.util;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
+
 /**
  * This class for  representation response to the client
  *
@@ -10,7 +12,7 @@ package com.leverX.blog.util;
 public class GenericResponse {
     private String message;
 
-    public GenericResponse(String message) {
+    public GenericResponse(String message ) {
         this.message = message;
     }
 }

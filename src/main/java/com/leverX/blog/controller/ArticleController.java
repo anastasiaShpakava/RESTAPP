@@ -8,7 +8,6 @@ import com.leverX.blog.model.dto.ArticleDTO;
 import com.leverX.blog.model.dto.CustomUserDetails;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,15 +25,17 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-@RequiredArgsConstructor
 public class ArticleController {
 
     private final UserService userService;
-
     private final ArticleService articleService;
-
     private final ModelMapper modelMapper;
 
+    public ArticleController(UserService userService, ArticleService articleService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.articleService = articleService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value = "/articles/{articleId}")
     public ArticleDTO showArticle(@PathVariable("articleId") Integer articleId) {
@@ -73,6 +74,7 @@ public class ArticleController {
 
 
     @GetMapping(value = "/{login}/articles")
+    @PreAuthorize("isAuthenticated()")
     public Page<ArticleDTO> getAllArticlesForCurrentUser(CustomUserDetails customUserDetails) {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         Page<Article> articleList = articleService.findArticleByUserId(customUserDetails.getUsername(), pageRequest);

@@ -6,8 +6,10 @@ import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.Tag;
 import com.leverX.blog.model.dto.ArticleDTO;
 import com.leverX.blog.repository.ArticleRepository;
+import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.TagService;
+import com.leverX.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.hibernate.Hibernate;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,12 +37,18 @@ import java.util.stream.Collectors;
  *
  * @author Shpakova A.
  */
-@Service
-@RequiredArgsConstructor
+@Service ("articleService")
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final TagService tagService;
+private final UserService userService;
+
+    public ArticleServiceImpl(ArticleRepository articleRepository, TagService tagService,UserService userService) {
+        this.articleRepository = articleRepository;
+        this.tagService = tagService;
+        this.userService=userService;
+    }
 
     @Override
     public Page<Article> findArticleByTag(List<String> tags, Pageable pageable) {
@@ -54,13 +63,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article saveNewArticle(Article newArticle) {
-        return articleRepository.save(Article.builder()
-                .title(newArticle.getTitle())
-                .text(newArticle.getText())
-                .articleStatus(newArticle.getArticleStatus())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build());
+        newArticle.setCreatedAt(LocalDateTime.now());
+        newArticle.setUser(userService.currentUser());
+        if (newArticle.getTags() != null) {
+            Collection<Tag> articleTags = new ArrayList<>();
+            for (Tag tag : newArticle.getTags()) {
+                articleTags.add(tagService.saveTag(tag));
+            }
+            newArticle.setTags(articleTags);
+        }
+        return articleRepository.save(newArticle);
     }
 
     @Override

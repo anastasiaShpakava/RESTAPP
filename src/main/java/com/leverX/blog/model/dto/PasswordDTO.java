@@ -1,6 +1,8 @@
 package com.leverX.blog.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -9,6 +11,8 @@ import lombok.Data;
  * @author Shpakova A.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PasswordDTO {
     private String oldPassword;
     private String token;

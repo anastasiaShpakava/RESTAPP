@@ -2,7 +2,9 @@ package com.leverX.blog.model.dto;
 
 import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.Tag;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
@@ -13,6 +15,8 @@ import java.util.Collection;
  */
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleDTO {
     private Integer id;
 

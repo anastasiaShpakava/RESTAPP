@@ -1,16 +1,12 @@
 package com.leverX.blog.service.impl;
 
-import com.leverX.blog.model.dto.PasswordResetToken;
-import com.leverX.blog.model.User;
 import com.leverX.blog.model.Role;
-import com.leverX.blog.model.dto.RegistrationRequest;
+import com.leverX.blog.model.User;
+import com.leverX.blog.model.dto.PasswordResetToken;
 import com.leverX.blog.repository.PasswordResetTokenRepository;
-import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.repository.RoleRepository;
+import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.service.UserService;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -29,17 +24,20 @@ import java.util.Calendar;
  * @author Shpakova A.
  */
 
-@Service
-@RequiredArgsConstructor
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private  UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PasswordResetTokenRepository passwordTokenRepository;
 
-    private  RoleRepository roleRepository;
-
-    private  PasswordEncoder passwordEncoder;
-
-    private PasswordResetTokenRepository passwordTokenRepository;
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordTokenRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.passwordTokenRepository = passwordTokenRepository;
+    }
 
     @Override
     public User findByEmail(String email) {
@@ -58,18 +56,6 @@ public class UserServiceImpl implements UserService {
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
-    }
-
-    @Override
-    public User createUser(RegistrationRequest registrationRequest) {
-        User newUser = new User();
-        newUser.setEmail(registrationRequest.getEmail());
-        newUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-        newUser.setLogin(registrationRequest.getLogin());
-        newUser.setLastName(registrationRequest.getLastName());
-        newUser.setFirstName(registrationRequest.getFirstName());
-        newUser.setCreatedAt(LocalDateTime.now());
-        return newUser;
     }
 
     public User findByLoginAndPassword(String login, String password) {
