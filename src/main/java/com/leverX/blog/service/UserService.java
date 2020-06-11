@@ -1,9 +1,8 @@
 package com.leverX.blog.service;
 
 
-import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.model.User;
-import org.springframework.stereotype.Service;
+import com.leverX.blog.model.dto.RegistrationRequest;
 
 
 /**
@@ -21,6 +20,9 @@ public interface UserService {
     User save(User user);
 
     User findByLoginAndPassword(String login, String password);
+
+    User createUser(RegistrationRequest registrationRequest);
+
     User currentUser();
 
     /**

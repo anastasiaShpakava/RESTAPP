@@ -3,10 +3,12 @@ package com.leverX.blog.service.impl;
 import com.leverX.blog.model.Role;
 import com.leverX.blog.model.User;
 import com.leverX.blog.model.dto.PasswordResetToken;
+import com.leverX.blog.model.dto.RegistrationRequest;
 import com.leverX.blog.repository.PasswordResetTokenRepository;
 import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.service.UserService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordTokenRepository;
 
+
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -40,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable (value = "user")
     public User findByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
@@ -66,6 +71,19 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    @Cacheable(value = "users", key = "#name")  //если сущность с таким именем уже есть, мы не будем её сохранять
+    public User createUser(RegistrationRequest registrationRequest) {
+        User newUser = new User();
+        newUser.setEmail(registrationRequest.getEmail());
+        newUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        newUser.setLogin(registrationRequest.getLogin());
+        newUser.setLastName(registrationRequest.getLastName());
+        newUser.setFirstName(registrationRequest.getFirstName());
+        newUser.setCreatedAt(LocalDateTime.now());
+        return newUser;
     }
 
     @Override
