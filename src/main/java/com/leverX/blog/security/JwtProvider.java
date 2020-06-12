@@ -21,10 +21,10 @@ public class JwtProvider {
     @Value("$(jwt.secret)") //поле jwtSecret в файле настроект лежит
     private String jwtSecret;
 
-    public String generateToken(String email) {
+    public String generateToken(String login) {
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder() //создаем токен
-                .setSubject(email)//потом забираем емеил в фильтре ,когда пользователь делает запрос
+                .setSubject(login)//потом забираем логин в фильтре ,когда пользователь делает запрос
                 .setExpiration(date) //15 дней,сли пройдет 15 дней и токен не обновить — будет выброшено сообщение об ошибке в методе validateToken
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)//принимает на вход алгоритм подписи и кодовое слово, которое потом потребуется для расшифровки
                 .compact();
@@ -48,10 +48,10 @@ public class JwtProvider {
         return false;
     }
 
-    public String getLoginFromToken(String token) { //получить информацию о email пользователя
+    public String getLoginFromToken(String token) { //получить информацию о логине пользователя
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
     //При генерации токена в Subject кладется токен — значит,
-    // если токен будет валидный в нем будет емеил.
+    // если токен будет валидный - в нем будет логин.
 }

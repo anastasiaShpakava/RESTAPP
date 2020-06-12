@@ -5,13 +5,13 @@ import com.leverX.blog.model.dto.CustomUserDetails;
 import com.leverX.blog.service.UserService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Shpakova A.
  */
 
-@Component
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserService userService;

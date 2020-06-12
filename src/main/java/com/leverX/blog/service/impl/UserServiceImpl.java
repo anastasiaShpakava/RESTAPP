@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(User user) {
+    public User save(User user) {  //для авторизированных пользователей
         Role role = roleRepository.findByLogin("ROLE_USER");
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         //  если токен действителен, пользователь получит право сменить свой пароль,
         //  предоставив ему CHANGE PASSWORD PRIVILEGE и направив его на страницу для обновления
         //  своего пароля
-        public String validatePasswordResetToken(long id, String token) {
+        public String validatePasswordResetToken(Integer id, String token) {
             PasswordResetToken passToken =
                     passwordTokenRepository.findByToken(token);
             if ((passToken == null) || (passToken.getUser()

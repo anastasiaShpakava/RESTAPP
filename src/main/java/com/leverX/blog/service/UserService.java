@@ -31,7 +31,7 @@ public interface UserService {
      */
     void createPasswordResetTokenForUser(String token, User user);
 
-    String validatePasswordResetToken(long id, String token);//для смены пароля
+    String validatePasswordResetToken(Integer id, String token);//для смены пароля
 
     void changeUserPassword(User user, String password);
 }
