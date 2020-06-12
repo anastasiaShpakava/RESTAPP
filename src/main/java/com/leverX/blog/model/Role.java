@@ -1,6 +1,9 @@
 package com.leverX.blog.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
@@ -10,6 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="role")
 public class Role {
 
