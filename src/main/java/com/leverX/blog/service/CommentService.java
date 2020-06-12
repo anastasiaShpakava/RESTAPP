@@ -1,12 +1,9 @@
 package com.leverX.blog.service;
 
 
-import com.leverX.blog.model.Article;
 import com.leverX.blog.model.Comment;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 /**
  * Interface for {@link com.leverX.blog.service.impl.CommentServiceImpl}
@@ -19,7 +16,7 @@ public interface CommentService {
 
     Comment saveNewComment(Comment comment, Integer articleId);
 
-    void deleteCommentFromArticle(Comment comment, Article article);
+    public void deleteCommentFromArticle(Integer commentId);
 
     Page<Comment> getCommentsOfArticle(Integer id, Pageable pageable);
 

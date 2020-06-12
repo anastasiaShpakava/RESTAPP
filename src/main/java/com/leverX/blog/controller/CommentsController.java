@@ -6,7 +6,6 @@ import com.leverX.blog.model.Comment;
 import com.leverX.blog.model.dto.CommentDTO;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.CommentService;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -60,6 +59,6 @@ public class CommentsController {
     public void deleteComment(@PathVariable("articleId") Integer articleId, @PathVariable("commentId") Integer commentId) {
         Article article = articleService.getArticle(articleId);
         Comment comment = commentService.getCommentById(commentId, articleId);
-        commentService.deleteCommentFromArticle(comment, article);
+        commentService.deleteCommentFromArticle(commentId);
     }
 }

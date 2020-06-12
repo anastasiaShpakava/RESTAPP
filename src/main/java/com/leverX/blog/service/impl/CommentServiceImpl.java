@@ -7,7 +7,6 @@ import com.leverX.blog.repository.ArticleRepository;
 import com.leverX.blog.repository.CommentRepository;
 import com.leverX.blog.service.CommentService;
 import com.leverX.blog.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-;
 
 import java.time.LocalDateTime;
+
+;
 
 /**
  * This class implements {@link CommentService}
@@ -54,8 +54,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteCommentFromArticle(Comment comment, Article article) {
-        commentRepository.delete(comment.getId());
+    public void deleteCommentFromArticle(Integer commentId) {
+        commentRepository.deleteById(commentId);
     }
 
 

@@ -17,5 +17,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     Page<Comment> findCommentsByArticleId(Integer id, Pageable pageable);
 
-    void delete(Integer id);//?
+    //void delete(Integer id);//?
 }

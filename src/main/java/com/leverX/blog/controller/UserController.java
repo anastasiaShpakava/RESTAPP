@@ -74,7 +74,7 @@ public class UserController {
 
     @GetMapping(value = "/auth/changePassword")
     public String showChangePasswordPage(Locale locale, Model model,
-                                         @RequestParam("id") long id, @RequestParam("token") String token) {
+                                         @RequestParam("id") Integer id, @RequestParam("token") String token) {
         String result = userService.validatePasswordResetToken(id, token);
         if (result != null) {
             model.addAttribute("message",

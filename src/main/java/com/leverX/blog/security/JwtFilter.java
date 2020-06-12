@@ -27,11 +27,16 @@ import static org.springframework.util.StringUtils.hasText;
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
-    private final JwtProvider jwtProvider;
-    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtFilter(JwtProvider jwtProvider, CustomUserDetailsService customUserDetailsService) {
+    private  JwtProvider jwtProvider;
+
+    public void setJwtProvider(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
+    }
+
+    private CustomUserDetailsService customUserDetailsService;
+
+    public void setCustomUserDetailsService(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 

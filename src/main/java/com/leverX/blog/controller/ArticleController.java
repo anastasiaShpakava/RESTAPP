@@ -91,7 +91,7 @@ public class ArticleController {
         return modelMapper.map(updatedArticle, ArticleDTO.class);
     }
 
-    @GetMapping("/changeStatus/{id}")
+    @GetMapping("articles/changeStatus/{id}")
     public void changeStatus(@PathVariable Integer id, @RequestParam(value = "status") ArticleStatus status) {
         articleService.changeStatus(id, status);
     }

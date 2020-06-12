@@ -1,6 +1,5 @@
 package com.leverX.blog.controller;
 
-import com.leverX.blog.security.JwtFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +26,6 @@ public class ArticleControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-    @Autowired
-    private JwtFilter jwtFilter;
-    @Autowired
-    private ArticleController articleController;
     @Autowired
     private MockMvc mockMvc;
 
