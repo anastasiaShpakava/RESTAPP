@@ -47,13 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable (value= "userCache", key= "#email")
+    @Cacheable(value = "userCache", key = "#email")
     public User findByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
 
     @Override
-    @Cacheable(value= "userCache", key= "#login")  //кэшируем возвращаемые данные
+    @Cacheable(value = "userCache", key = "#login")  //кэшируем возвращаемые данные
     public User findByLogin(String login) {
         return userRepository.findByLoginIgnoreCase(login);
     }
@@ -61,8 +61,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     @Caching(
-            put= { @CachePut(value= "userCache", key= "#user.id") },
-            evict= { @CacheEvict(value= "allUserCache", allEntries= true) }
+            put = {@CachePut(value = "userCache", key = "#user.id")},
+            evict = {@CacheEvict(value = "allUserCache", allEntries = true)}
     )
     public User save(User user) {  //для авторизированных пользователей
         Role role = roleRepository.findByLogin("ROLE_USER");
@@ -70,8 +70,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
-@Override
-@Cacheable(value= "userCache")
+
+    @Override
+    @Cacheable(value = "userCache")
     public User findByLoginAndPassword(String login, String password) {
         User user = findByLogin(login);
         if (user != null) {
@@ -84,8 +85,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Caching(
-            put= { @CachePut(value= "userCache") },
-            evict= { @CacheEvict(value= "allUserCache", allEntries= true) }
+            put = {@CachePut(value = "userCache")},
+            evict = {@CacheEvict(value = "allUserCache", allEntries = true)}
     )
     public User createUser(RegistrationRequest registrationRequest) {
         User newUser = new User();
@@ -100,49 +101,48 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User currentUser() {
-      return   (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
     public void createPasswordResetTokenForUser(String token, User user) {
-    PasswordResetToken myToken = new PasswordResetToken(token, user);
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
         passwordTokenRepository.save(myToken);
     }
 
 
     @Override
-
-        //  если токен действителен, пользователь получит право сменить свой пароль,
-        //  предоставив ему CHANGE PASSWORD PRIVILEGE и направив его на страницу для обновления
-        //  своего пароля
-        public String validatePasswordResetToken(Integer id, String token) {
-            PasswordResetToken passToken =
-                    passwordTokenRepository.findByToken(token);
-            if ((passToken == null) || (passToken.getUser()
-                    .getId() != id)) {
-                return "invalidToken";
-            }
-
-            Calendar cal = Calendar.getInstance();  //проверяет, истекла ли ссылка
-            if ((passToken.getExpiryDate()
-                    .getTime() - cal.getTime()
-                    .getTime()) <= 0) {
-                return "expired";
-            }
-
-            User user = passToken.getUser();
-            Authentication auth = new UsernamePasswordAuthenticationToken(
-                    user, null, Arrays.asList(
-                    new SimpleGrantedAuthority("CHANGE__PASSWORD__PRIVILEGE")));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            return null;
+    public String validatePasswordResetToken(Integer id, String token) {
+        PasswordResetToken passToken =
+                passwordTokenRepository.findByToken(token);
+        if ((passToken == null) || (passToken.getUser()
+                .getId() != id)) {
+            return "invalidToken";
         }
 
+        Calendar cal = Calendar.getInstance();  //проверяет, истекла ли ссылка
+        if ((passToken.getExpiryDate()
+                .getTime() - cal.getTime()
+                .getTime()) <= 0) {
+            return "expired";
+        }
+
+        User user = passToken.getUser();
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                user, null, Arrays.asList(
+                new SimpleGrantedAuthority("CHANGE__PASSWORD__PRIVILEGE")));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return null;
+    }
+    //  если токен действителен, пользователь получит право сменить свой пароль,
+    //  предоставив ему CHANGE PASSWORD PRIVILEGE и направив его на страницу для обновления
+    //  своего пароля
+
     @Override
-    @Cacheable(value= "userPassword", key= "#password")
+    @Cacheable(value = "userPassword", key = "#password")
     public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
-      userRepository.save(user);
+        userRepository.save(user);
     }
 }
 

@@ -13,10 +13,9 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface CommentService {
-
     Comment saveNewComment(Comment comment, Integer articleId);
 
-    public void deleteCommentFromArticle(Integer commentId);
+    void deleteCommentFromArticle(Integer commentId);
 
     Page<Comment> getCommentsOfArticle(Integer id, Pageable pageable);
 

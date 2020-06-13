@@ -12,7 +12,6 @@ import com.leverX.blog.model.dto.RegistrationRequest;
  */
 
 public interface UserService {
-
     User findByEmail(String email);
 
     User findByLogin(String login);

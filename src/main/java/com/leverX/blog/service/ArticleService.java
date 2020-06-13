@@ -16,12 +16,11 @@ import java.util.List;
  */
 
 public interface ArticleService {
-
-    Page<Article> findArticleByTag(List<String> tags,Pageable pageable);
+    Page<Article> findArticleByTag(List<String> tags, Pageable pageable);
 
     Article updateArticle(Article article, ArticleDTO editedData);
 
-    Page<Article> findArticleByUserLogin(String userLogin,Pageable pageable);
+    Page<Article> findArticleByUserLogin(String userLogin, Pageable pageable);
 
     Article saveNewArticle(Article newArticle);
 
@@ -33,5 +32,5 @@ public interface ArticleService {
 
     void changeStatus(Integer id, ArticleStatus status);
 
-    Page<Article> getArticlesPage (Pageable pageable);
+    Page<Article> getArticlesPage(Pageable pageable);
 }
