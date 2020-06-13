@@ -6,6 +6,7 @@ import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
 import com.leverX.blog.model.dto.ArticleDTO;
 import com.leverX.blog.model.dto.CustomUserDetails;
+import com.leverX.blog.model.dto.TagCloud;
 import com.leverX.blog.service.ArticleService;
 import com.leverX.blog.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -13,10 +14,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,5 +96,22 @@ public class ArticleController {
     @GetMapping("articles/changeStatus/{id}")
     public void changeStatus(@PathVariable Integer id, @RequestParam(value = "status") ArticleStatus status) {
         articleService.changeStatus(id, status);
+    }
+
+    @PutMapping(value = "articles/{articleId}")
+    @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ArticleDTO editArticle(@Valid @RequestBody ArticleDTO editedData, @PathVariable("articleId") Integer articleId) {
+        Article articleToEdit = articleService.getArticle(articleId);
+        Article updatedArticle = articleService.updateArticle(articleToEdit, editedData);
+        return modelMapper.map(updatedArticle, ArticleDTO.class);
+    }
+
+    @GetMapping(value = "tagCloud", params = {"tags"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public TagCloud getArticlesWithTagCount(@RequestParam("tags") String tags) {
+        List<String> tagNames = Arrays.stream(tags.split(",")).map(String::trim).map(String::toLowerCase).distinct().collect(Collectors.toList());
+        Integer count = articleService.amountArticlesWithTag(tagNames);
+        return new TagCloud(tagNames, count);
     }
 }

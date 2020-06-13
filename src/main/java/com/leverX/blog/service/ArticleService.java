@@ -7,6 +7,7 @@ import com.leverX.blog.model.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,4 +34,6 @@ public interface ArticleService {
     void changeStatus(Integer id, ArticleStatus status);
 
     Page<Article> getArticlesPage(Pageable pageable);
+
+    Integer amountArticlesWithTag(Collection<String> tags);
 }

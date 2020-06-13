@@ -111,6 +111,11 @@ private final UserService userService;
     }
 
     @Override
+    public Integer amountArticlesWithTag(Collection<String> tags) {
+        return articleRepository.findArticleByAmountTag(tags, (int) tags.size());
+    }
+
+    @Override
     @Transactional
     @Caching(
             put= { @CachePut(value= "articleCache", key= "#article.id") },
