@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 
 /**
  * This class is for new password when password was changed.
@@ -14,7 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordDTO {
+    @NotBlank
     private String oldPassword;
+    @NotBlank
     private String token;
+    @NotBlank
     private String newPassword;
 }
