@@ -79,7 +79,7 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public Page<ArticleDTO> getAllArticlesForCurrentUser(CustomUserDetails customUserDetails) {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
-        Page<Article> articleList = articleService.findArticleByUserId(customUserDetails.getUsername(), pageRequest);
+        Page<Article> articleList = articleService.findArticleByUserLogin(customUserDetails.getUsername(), pageRequest);
         return articleList.map(article -> modelMapper.map(article, ArticleDTO.class));
     }
 

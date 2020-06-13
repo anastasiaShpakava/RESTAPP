@@ -8,7 +8,10 @@ import com.leverX.blog.repository.PasswordResetTokenRepository;
 import com.leverX.blog.repository.RoleRepository;
 import com.leverX.blog.repository.UserRepository;
 import com.leverX.blog.service.UserService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,26 +47,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable ("user")
+    @Cacheable (value= "userCache", key= "#email")
     public User findByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
 
     @Override
-    @Cacheable("user")  //кэшируем возвращамые данные
+    @Cacheable(value= "userCache", key= "#login")  //кэшируем возвращаемые данные
     public User findByLogin(String login) {
         return userRepository.findByLoginIgnoreCase(login);
     }
 
     @Transactional
     @Override
+    @Caching(
+            put= { @CachePut(value= "userCache", key= "#user.id") },
+            evict= { @CacheEvict(value= "allUserCache", allEntries= true) }
+    )
     public User save(User user) {  //для авторизированных пользователей
         Role role = roleRepository.findByLogin("ROLE_USER");
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
-
+@Override
+@Cacheable(value= "userCache")
     public User findByLoginAndPassword(String login, String password) {
         User user = findByLogin(login);
         if (user != null) {
@@ -75,7 +83,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "users", key = "#name")  //если сущность с таким именем уже есть, мы не будем её сохранять
+    @Caching(
+            put= { @CachePut(value= "userCache") },
+            evict= { @CacheEvict(value= "allUserCache", allEntries= true) }
+    )
     public User createUser(RegistrationRequest registrationRequest) {
         User newUser = new User();
         newUser.setEmail(registrationRequest.getEmail());
@@ -128,6 +139,7 @@ public class UserServiceImpl implements UserService {
         }
 
     @Override
+    @Cacheable(value= "userPassword", key= "#password")
     public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
       userRepository.save(user);

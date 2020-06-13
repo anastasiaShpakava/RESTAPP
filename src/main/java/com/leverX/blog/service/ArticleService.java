@@ -3,12 +3,9 @@ package com.leverX.blog.service;
 
 import com.leverX.blog.model.Article;
 import com.leverX.blog.model.ArticleStatus;
-import com.leverX.blog.model.Tag;
 import com.leverX.blog.model.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public interface ArticleService {
 
     Article updateArticle(Article article, ArticleDTO editedData);
 
-    Page<Article> findArticleByUserId(String userLogin,Pageable pageable);
+    Page<Article> findArticleByUserLogin(String userLogin,Pageable pageable);
 
     Article saveNewArticle(Article newArticle);
 
