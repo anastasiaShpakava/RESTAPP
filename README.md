@@ -140,7 +140,8 @@ Tag {
     
     }
     
-    Relaions should be "many to many", with additional table. Tags are passed as an array when creating or editing a post. If the transferred tag already exists in the database, there is no need to duplicate it, you need to add the ID of an existing post.
+   
+   Relaions should be "many to many", with additional table. Tags are passed as an array when creating or editing a post. If the transferred tag already exists in the database, there is no need to duplicate it, you need to add the ID of an existing post.
 REST
 
 GET /articles?tags=tag1,tag2 - in the result of searchig should be articles, which contains at least one search tag.
