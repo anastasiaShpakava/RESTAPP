@@ -101,7 +101,7 @@ private final UserService userService;
     }
 
     @Override
-    @Cacheable(value= "allArticleCache", key= "#id" , unless ="result.size()==0")
+    @Cacheable(value= "allArticleCache", key= "#article.id" , unless ="result.size()==0")
     public Page<Article> getArticlesPage(Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

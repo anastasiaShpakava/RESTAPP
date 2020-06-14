@@ -25,7 +25,7 @@ public interface ArticleService {
 
     Article saveNewArticle(Article newArticle);
 
-    void deleteArticle(Article article);
+    void deleteArticle(Integer articleId);
 
     Article getArticleForReading(Integer id);
 
