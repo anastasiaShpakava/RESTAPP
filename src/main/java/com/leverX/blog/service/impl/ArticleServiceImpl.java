@@ -148,8 +148,8 @@ private final UserService userService;
     @Override
     @Transactional
     @CacheEvict (value = "articleCache")
-    public void deleteArticle(Article article) {
-        articleRepository.delete(article.getId());
+    public void deleteArticle(Integer articleId) {
+        articleRepository.deleteById(articleId);
     }
 
     @SneakyThrows

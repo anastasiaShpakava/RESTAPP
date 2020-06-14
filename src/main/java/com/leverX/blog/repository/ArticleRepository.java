@@ -29,8 +29,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("SELECT a FROM Article a JOIN a.user u WHERE u.login=:userLogin")
     Page<Article> findAllByUserLogin(@Param("userLogin") String userLogin, Pageable pageable);
 
-    void delete(Integer id); //?
-@Query(value="select article.id from article where article.status ='PUBLIC'", nativeQuery = true)
+    @Query(value="select article.id from article where article.status ='PUBLIC'", nativeQuery = true)
     Page<Article> findAllByStatus(ArticleStatus status, Pageable pageable);
 
     @Query("SELECT count(a) FROM Article a WHERE :tagCount = (SELECT COUNT(DISTINCT t.id) FROM Article a2 JOIN a2.tags t WHERE LOWER(t.name) in (:tagNames) and a = a2)")
