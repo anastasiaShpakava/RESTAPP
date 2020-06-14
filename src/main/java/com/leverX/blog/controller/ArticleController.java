@@ -76,7 +76,6 @@ public class ArticleController {
         articleService.deleteArticle(article);
     }
 
-
     @GetMapping(value = "/{login}/articles")
     @PreAuthorize("isAuthenticated()")
     public Page<ArticleDTO> getAllArticlesForCurrentUser(CustomUserDetails customUserDetails) {
