@@ -109,7 +109,7 @@ public class ArticleController {
 
     @GetMapping(value = "tagCloud", params = {"tags"})
     @ResponseStatus(value = HttpStatus.OK)
-    public TagCloud getArticlesWithTagCount(@RequestParam("tags") String tags) {
+    public TagCloud getArticlesAmountWithTag(@RequestParam("tags") String tags) {
         List<String> tagNames = Arrays.stream(tags.split(",")).map(String::trim).map(String::toLowerCase).distinct().collect(Collectors.toList());
         Integer count = articleService.amountArticlesWithTag(tagNames);
         return new TagCloud(tagNames, count);
