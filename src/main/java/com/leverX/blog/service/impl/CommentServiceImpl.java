@@ -45,8 +45,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @SneakyThrows
     @Caching(
-            put= { @CachePut(value= "commentCache", key= "#newComment.id") },
-            evict= { @CacheEvict(value= "allCommentCache", allEntries= true) }
+            put = {@CachePut(value = "commentCache", key = "#newComment.id")},
+            evict = {@CacheEvict(value = "allCommentCache", allEntries = true)}
     )
     public Comment saveNewComment(Comment newComment, Integer articleId) {
         if (!articleRepository.existsById(articleId)) {
@@ -62,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict (value = "commentCache")
+    @CacheEvict(value = "commentCache")
     public void deleteCommentFromArticle(Integer commentId) {
         commentRepository.deleteById(commentId);
     }
@@ -70,19 +70,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @SneakyThrows
-    @Cacheable(value= "commentCache", key= "#id",unless = "result.size()==0")
+    @Cacheable(value = "commentCache", key = "#id", unless = "result.size()==0")
     public Page<Comment> getCommentsOfArticle(Integer id, Pageable pageable) {
         if (!articleRepository.existsById(id)) {
             throw new ResourceNotFoundException("Article with such id doesn't exist");
         }
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
-        return commentRepository.findCommentsByArticleId(id,pageRequest);
+        return commentRepository.findCommentsByArticleId(id, pageRequest);
     }
 
     @Override
     @SneakyThrows
-    @Cacheable(value= "commentCache", key= "#commentId")
-    public Comment getCommentById(Integer commentId, Integer articleId){
+    @Cacheable(value = "commentCache", key = "#commentId")
+    public Comment getCommentById(Integer commentId, Integer articleId) {
         if (!articleRepository.existsById(articleId)) {
             throw new ResourceNotFoundException("Article with such id  doesn't exists");
         }

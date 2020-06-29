@@ -5,6 +5,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 /**
  * This class is for registration a DispatcherServlet and use Java-based Spring configuration.
+ *
  * @author Shpakova A.
  */
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

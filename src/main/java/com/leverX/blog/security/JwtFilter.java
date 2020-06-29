@@ -28,7 +28,7 @@ public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
 
-    private  JwtProvider jwtProvider;
+    private JwtProvider jwtProvider;
 
     public void setJwtProvider(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;

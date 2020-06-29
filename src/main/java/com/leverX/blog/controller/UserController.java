@@ -92,5 +92,4 @@ public class UserController {
         return new GenericResponse(
                 messages.getMessage("message.resetPasswordSuc", null, locale));
     }
-
 }

@@ -37,21 +37,21 @@ import java.util.stream.Collectors;
  *
  * @author Shpakova A.
  */
-@Service ("articleService")
+@Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final TagService tagService;
-private final UserService userService;
+    private final UserService userService;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, TagService tagService,UserService userService) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, TagService tagService, UserService userService) {
         this.articleRepository = articleRepository;
         this.tagService = tagService;
-        this.userService=userService;
+        this.userService = userService;
     }
 
     @Override
-    @Cacheable(value= "articleCache", unless = "result.size()==0")
+    @Cacheable(value = "articleCache", unless = "result.size()==0")
     public Page<Article> findArticleByTag(List<String> tags, Pageable pageable) {
         tags = tags.stream().map(String::toLowerCase).collect(Collectors.toList());
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
@@ -64,8 +64,8 @@ private final UserService userService;
 
     @Override
     @Caching(
-            put= { @CachePut(value= "articleCache", key= "#newArticle.id") },
-            evict= { @CacheEvict(value= "allArticlesCache", allEntries= true) }
+            put = {@CachePut(value = "articleCache", key = "#newArticle.id")},
+            evict = {@CacheEvict(value = "allArticlesCache", allEntries = true)}
     )
     public Article saveNewArticle(Article newArticle) {
         newArticle.setCreatedAt(LocalDateTime.now());
@@ -82,7 +82,7 @@ private final UserService userService;
 
     @Override
     @SneakyThrows
-    @Cacheable(value= "articleCache", key= "#id")
+    @Cacheable(value = "articleCache", key = "#id")
     public Article getArticle(Integer id) {
         Article article = articleRepository.getOne(id);
         if (article == null) {
@@ -95,13 +95,13 @@ private final UserService userService;
     }
 
     @Override
-    @Cacheable(value= "articleCache", key= "#id")
+    @Cacheable(value = "articleCache", key = "#id")
     public void changeStatus(Integer id, ArticleStatus status) {
         articleRepository.getOne(id).setArticleStatus(status);
     }
 
     @Override
-    @Cacheable(value= "allArticleCache", key= "#article.id" , unless ="result.size()==0")
+    @Cacheable(value = "allArticleCache", key = "#article.id", unless = "result.size()==0")
     public Page<Article> getArticlesPage(Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -118,8 +118,8 @@ private final UserService userService;
     @Override
     @Transactional
     @Caching(
-            put= { @CachePut(value= "articleCache", key= "#article.id") },
-            evict= { @CacheEvict(value= "allArticlesCache", allEntries= true) }
+            put = {@CachePut(value = "articleCache", key = "#article.id")},
+            evict = {@CacheEvict(value = "allArticlesCache", allEntries = true)}
     )
     public Article updateArticle(Article article, ArticleDTO editedArticle) {
         article.setText(editedArticle.getText());
@@ -138,7 +138,7 @@ private final UserService userService;
     }
 
     @Override
-    @Cacheable(value= "articleCache", key= "#userLogin")
+    @Cacheable(value = "articleCache", key = "#userLogin")
     public Page<Article> findArticleByUserLogin(String userLogin, Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
         return articleRepository.findAllByUserLogin(userLogin, pageRequest);
@@ -147,7 +147,7 @@ private final UserService userService;
 
     @Override
     @Transactional
-    @CacheEvict (value = "articleCache")
+    @CacheEvict(value = "articleCache")
     public void deleteArticle(Integer articleId) {
         articleRepository.deleteById(articleId);
     }
@@ -155,7 +155,7 @@ private final UserService userService;
     @SneakyThrows
     @Override
     @Transactional
-    @Cacheable(value= "allArticleCache", key= "#id" , unless ="result.size()==0")
+    @Cacheable(value = "allArticleCache", key = "#id", unless = "result.size()==0")
     public Article getArticleForReading(Integer id) {
         Article article = articleRepository.getOne(id);
         if (article == null) {

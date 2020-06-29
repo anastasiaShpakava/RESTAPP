@@ -73,7 +73,7 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public void deleteArticle(@PathVariable("articleId") Integer articleId) {
         Article article = articleService.getArticle(articleId);
-        articleService.deleteArticle(article);
+        articleService.deleteArticle(articleId);
     }
 
     @GetMapping(value = "/{login}/articles")
